@@ -3,12 +3,13 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/otiai10/copy"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
+
+	"github.com/otiai10/copy"
 )
 
 var processors = []Processor{
@@ -96,12 +97,7 @@ func (c *Collection) makeTmpCopy(path string) (string, error) {
 }
 
 func (c *Collection) doAllDirs(path string) (string, error) {
-	workingPath, err := c.makeTmpCopy(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer os.RemoveAll(workingPath)
-	err = c.scanDir(workingPath)
+	err := c.scanDir(path)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -137,8 +133,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	c := Collection{}
-	output, err := c.doAllDirs(dir)
+
+	workingPath, err := c.makeTmpCopy(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.RemoveAll(workingPath)
+
+	subdir := KustomizeOverlayDir()
+	if subdir != "" {
+		workingPath += "/" + subdir
+	}
+
+	output, err := c.doAllDirs(workingPath)
 	if err != nil {
 		log.Fatal(err)
 	}

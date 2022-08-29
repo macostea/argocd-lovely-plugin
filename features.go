@@ -79,3 +79,9 @@ func KustomizeMerge() string {
 func KustomizePatch() string {
 	return getArgoEnv(`LOVELY_KUSTOMIZE_PATCH`, ``)
 }
+
+// KustomizeOverlayDir returns the path to the overlay used with kustomize
+// Set ARGOCD_ENV_LOVELY_KUSTOMIZE_OVERLAY_DIR to the dir you want to use as an overlay (needs to be part of the argocd source path)
+func KustomizeOverlayDir() string {
+	return getArgoEnv(`LOVELY_KUSTOMIZE_OVERLAY_DIR`, ``)
+}
