@@ -27,13 +27,9 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 	if !k.enabled(path) {
 		return input, ErrDisabledProcessor
 	}
-
-	finalPath := path
-
-	kustYamlPath := finalPath + "/kustomization.yaml"
-
+	kustYamlPath := path + "/kustomization.yaml"
 	if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
-		kustYamlPath = finalPath + "/kustomization.yml"
+		kustYamlPath = path + "/kustomization.yml"
 		if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
 			return nil, err
 		}
@@ -45,7 +41,7 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 	}
 	if input != nil {
 		// Reading from 'stdin' - so put this on disk for kustomize
-		intermediateFile, err := os.Create(finalPath + "/" + kustomizeIntermediateFilename)
+		intermediateFile, err := os.Create(path + "/" + kustomizeIntermediateFilename)
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +74,7 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 			return nil, err
 		}
 	}
-	out, err := exec.Command(KustomizeBinary(), `build`, `--enable-helm`, finalPath).CombinedOutput()
+	out, err := exec.Command(KustomizeBinary(), `build`, `--enable-helm`, path).CombinedOutput()
 	if err != nil {
 		return nil, errors.New(string(out))
 	}
