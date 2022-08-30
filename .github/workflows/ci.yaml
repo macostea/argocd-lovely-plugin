@@ -52,4 +52,4 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64, linux/arm64
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin:latest
+          tags: ghcr.io/getprotocollab/argocd-lovely-plugin:latest

@@ -1,7 +1,7 @@
 apiVersion: v2
 version: 1.0.0
-name: replaceme
+name: hello-world
 dependencies:
-- name: replaceme
-  version: 2.2.2
-  repository: https://helm.github.io/examples
+  - name: hello-world
+    version: 0.1.0
+    repository: https://helm.github.io/examples
